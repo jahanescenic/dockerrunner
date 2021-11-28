@@ -1,0 +1,27 @@
+version: '3.7'
+
+volumes:
+  todo:
+
+services:
+  system:
+    build:
+      context: system
+      args:
+        APT_MIRROR: "${APT_MIRROR:-}"
+        APT_PROXY: "${APT_PROXY:-}"
+    volumes:
+      - ./reports/system-test-report/:/opt/todo/reports:rw
+    # Google Chrome needs ~ 1Gb RAM SHM
+    shm_size: 1G
+
+  api:
+    build:
+      context: api
+      args:
+        APT_MIRROR: "${APT_MIRROR:-}"
+        APT_PROXY: "${APT_PROXY:-}"
+    volumes:
+      - ./reports/api-test-report:/opt/todo_api/newman:rw
+    # Google Chrome needs ~ 1Gb RAM SHM
+    shm_size: 1G
